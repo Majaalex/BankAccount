@@ -4,6 +4,8 @@
 //  Demonstrates the creation and use of multiple Account objects.
 //********************************************************************
 
+import org.w3c.dom.Text;
+
 public class Transactions
 {
    //-----------------------------------------------------------------
@@ -11,6 +13,9 @@ public class Transactions
    //-----------------------------------------------------------------
    public static void main (String[] args)
    {
+
+      TextHandler menu = new TextHandler();
+      menu.displayMenu();
       Account acct1 = new Account ("Ted Murphy", 72354, 102.56);
       Account acct2 = new Account ("Jane Smith", 69713, 40.00);
       Account acct3 = new Account ("Edward Demsey", 93757, 759.32);
@@ -32,5 +37,7 @@ public class Transactions
       System.out.println (acct1);
       System.out.println (acct2);
       System.out.println (acct3);
+
+
    }
 }
