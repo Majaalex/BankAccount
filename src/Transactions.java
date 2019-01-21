@@ -37,11 +37,6 @@ public class Transactions
          menu.displayMenu();
          menuChoice = menu.userInt();
 
-         //verify if the user wants to use an existing account
-         if (menuChoice > 3){
-            acctNumberSet = true;
-         }
-
          //if existing account, ask for the account number
          if (!acctNumberSet){
             System.out.println("Please select your account number:");
