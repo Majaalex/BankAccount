@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class TextHandler {
 
     public void displayMenu (){
@@ -9,8 +11,22 @@ public class TextHandler {
         System.out.println("5: End the program");
     }
 
-    public void userInput(){
-        System.out.println("Your value: " + input.nextInt());
+    public int userInt(){
+        Scanner reader = new Scanner(System.in);
+        System.out.println("Your value: ");
+        return reader.nextInt();
+    }
+
+    public double userDouble(){
+        Scanner reader = new Scanner(System.in);
+        System.out.println("Your value: ");
+        return reader.nextDouble();
+    }
+
+    public String userString(){
+        Scanner reader = new Scanner(System.in);
+        System.out.println("Your value: ");
+        return reader.nextLine();
     }
 
 }

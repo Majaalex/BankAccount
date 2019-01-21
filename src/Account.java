@@ -9,23 +9,28 @@ import java.text.NumberFormat;
 
 public class Account
 {
-   private final double RATE = 0.035;  // interest rate of 3.5%
+   //private final double RATE = 0.035; interest rate of 3.5%
 
    private long acctNumber;
    private double balance;
    private String name;
+   private double rate;
 
    //-----------------------------------------------------------------
    //  Sets up the account by defining its owner, account number,
    //  and initial balance.
    //-----------------------------------------------------------------
-   public Account (String owner, long account, double initial)
+   public Account (String owner, long account, double initial, double interest)
    {
       name = owner;
       acctNumber = account;
       balance = initial;
+      rate = interest;
    }
 
+   public long getAccount(){
+      return acctNumber;
+   }
    //-----------------------------------------------------------------
    //  Deposits the specified amount into the account. Returns the
    //  new balance.
@@ -53,7 +58,7 @@ public class Account
    //-----------------------------------------------------------------
    public double addInterest ()
    {
-      balance += (balance * RATE);
+      balance += (balance * rate);
       return balance;
    }
 
