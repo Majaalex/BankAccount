@@ -11,18 +11,21 @@ public class TextHandler {
         System.out.println("5: End the program");
     }
 
+    // userinput, returns int
     public int userInt(){
         Scanner reader = new Scanner(System.in);
         System.out.println("Your value: ");
         return reader.nextInt();
     }
 
+    // userinput, returns double
     public double userDouble(){
         Scanner reader = new Scanner(System.in);
         System.out.println("Your value: ");
         return reader.nextDouble();
     }
 
+    // userinput, returns String
     public String userString(){
         Scanner reader = new Scanner(System.in);
         System.out.println("Your value: ");

@@ -77,6 +77,6 @@ public class Account
    {
       NumberFormat fmt = NumberFormat.getCurrencyInstance();
 
-      return (acctNumber + "\t" + name + "\t" + fmt.format(balance));
+      return (acctNumber + "\t" + name + "\t" + fmt.format(balance) + rate);
    }
 }
