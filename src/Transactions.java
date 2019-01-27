@@ -25,7 +25,7 @@ public class Transactions
 
         int acctNumber;
         double acctBalance;
-        int menuChoice = 4;
+        int menuChoice;
         double withdrawFee = 0.5;
         boolean menuLoop = true;
         boolean acctNumberSet = false;
@@ -46,7 +46,6 @@ public class Transactions
 
                 // finds the account in the arraylist
                 for(int i = 0; i < accountHolder.size(); i++){
-                    System.out.println(accountHolder.get(i).getAccount() + " -- " + accountSelection);
                     // once it finds the correct account, saved the index for it
                     if (accountHolder.get(i).getAccount() == accountSelection && !accountExists) {
                         accountIndex = i;
