@@ -23,11 +23,13 @@ public class Transactions
         TextHandler menu = new TextHandler();
         System.out.println("Hello and welcome to AM Banking & Finances.");
 
-        int acctNumber = 100;
+        int acctNumber;
+        double acctBalance;
         int menuChoice = 4;
         double withdrawFee = 0.5;
         boolean menuLoop = true;
         boolean acctNumberSet = false;
+        boolean accountExists = false;
         int accountSelection;
         int accountIndex = 0;
 
@@ -46,9 +48,14 @@ public class Transactions
                 for(int i = 0; i < accountHolder.size(); i++){
                     System.out.println(accountHolder.get(i).getAccount() + " -- " + accountSelection);
                     // once it finds the correct account, saved the index for it
-                    if (accountHolder.get(i).getAccount() == accountSelection) {
+                    if (accountHolder.get(i).getAccount() == accountSelection && !accountExists) {
                         accountIndex = i;
+                        accountExists = true;
                     }
+                }
+                if (!accountExists){
+                    System.out.println("You have input an account that does not exist. Please create a new account");
+                    menuChoice = 4;
                 }
                 acctNumberSet = true;
             }
@@ -76,14 +83,16 @@ public class Transactions
                 // create a new account
                 case 4:
                     System.out.println("When creating an account, you will be assigned an account number and add an owner and interest rate.");
-                    System.out.println("The account will always start with a balance of 10.");
-                    System.out.println("Your account number is: " + acctNumber + ".");
+                    System.out.println("Please select an account number.");
+                    acctNumber = menu.userInt();
+                    System.out.println("Please choose your initial deposit.");
+                    acctBalance = menu.userDouble();
                     System.out.println("Now, please input the name of the owner of the account: ");
                     String owner = menu.userString();
                     System.out.println("And finally choose an interest between 0 and 1: ");
                     double interestRate = menu.userDouble();
                     // creates the account and adds it to the arraylist
-                    Account acct = new Account(owner, acctNumber++, 10, interestRate);
+                    Account acct = new Account(owner, acctNumber, acctBalance, interestRate);
                     accountHolder.add(acct);
                     System.out.println("You have successfully created a new account, with a current balance of " + acct.getBalance() + ".");
                     // set acctberSet flag to false to make the user reenter account number before managing the account
