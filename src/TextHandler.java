@@ -9,6 +9,7 @@ public class TextHandler {
         System.out.println("3: Withdraw from your account balance");
         System.out.println("4: Create a new account");
         System.out.println("5: End the program");
+        System.out.println("6: Show a list of all accounts");
     }
 
     // userinput, returns int

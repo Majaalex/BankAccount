@@ -55,6 +55,9 @@ public abstract class Account
    public int getAccountType(){
       return accountType;
    }
+   public String getOwner(){
+       return name;
+   }
 
    //-----------------------------------------------------------------
    //  Returns the current balance of the account.

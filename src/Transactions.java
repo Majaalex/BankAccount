@@ -152,7 +152,7 @@ public class Transactions
                 case 6:
                     System.out.println("Showing a list of all accounts");
                     for (Account accounts : accountHolder){
-                        System.out.println(accounts.getAccountNum() + " || " + accounts.getBalance());
+                        System.out.println("Account Number: " + accounts.getAccountNum() + ", Owner: "  + accounts.getOwner() + ", Account Type: "+ accounts.getAccountType());
                     }
                 default:
                     System.out.println("You have selected an invalid option, please try again.");
