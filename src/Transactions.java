@@ -159,7 +159,6 @@ public class Transactions
                     break;
 
             }
-            System.out.println(accountHolder);
         } while (menuLoop);
 
     }
