@@ -31,17 +31,6 @@ public class Transactions
         int accountSelection;
         int accountIndex = 0;
 
-        // constructors variables
-        /*String owner;
-        int acctNumber;
-        double acctBalance;
-
-        // account creation section
-        //-----a check if an accountType gets selected,
-        //and then stores which type of account ------
-        boolean accountTypeCheck;
-        int accountType;*/
-
         // Initializing the thread for interestHandling
         InterestHandler interestThread = new InterestHandler(accountHolder);
         interestThread.start();
