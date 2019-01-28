@@ -1,10 +1,7 @@
 public class CheckingAccount extends Account{
 
-    public CheckingAccount(String owner, long account, double initial){
-        super(owner, account, initial);
-        setOwner(owner);
-        setAccountNum(account);
-        setBalance(initial);
+    public CheckingAccount(String owner, long account){
+        super(owner, account);
         setAccountType(1);
     }
     @Override

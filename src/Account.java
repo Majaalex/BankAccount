@@ -21,11 +21,10 @@ public abstract class Account
    //  Sets up the account by defining its owner, account number,
    //  and initial balance.
    //-----------------------------------------------------------------
-   public Account (String owner, long account, double initial)
+   public Account (String owner, long account)
    {
       setOwner(owner);
       setAccountNum(account);
-      setBalance(initial);
    }
 
 
@@ -73,8 +72,9 @@ public abstract class Account
    //-----------------------------------------------------------------
    public double deposit (double amount)
    {
-      balance = balance + amount;
-
+       balance = balance + amount;
+       System.out.println("You have deposited " + amount + " into your account.");
+       System.out.println("You now have a balance of " + balance);
       return balance;
    }
 
@@ -85,7 +85,8 @@ public abstract class Account
    public double withdraw (double amount, double fee)
    {
       balance = balance - amount - fee;
-
+      System.out.println("You have withdrawn " + amount + " from your account.");
+       System.out.println("You now have a balance of " + balance);
       return balance;
    }
 
@@ -103,6 +104,6 @@ public abstract class Account
    {
       NumberFormat fmt = NumberFormat.getCurrencyInstance();
 
-      return (acctNumber + "\t" + name + "\t" + fmt.format(balance) + rate);
+      return (acctNumber + "\t" + name + "\t" + fmt.format(balance) + "\t" + accountType);
    }
 }

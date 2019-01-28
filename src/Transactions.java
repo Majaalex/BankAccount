@@ -14,13 +14,14 @@ public class Transactions
 
     public static void main (String[] args)
     {
-        // create an arraylist and add a few entries
-        ArrayList<Account> accountHolder = new ArrayList<>();
-        accountHolder.add(new CheckingAccount("Ted Murphy", 72354, 102.56));
-        accountHolder.add(new CheckingAccount ("Jane Smith", 69713, 40.00));
-        accountHolder.add(new SavingsAccount ("Edward Demsey", 93757, 759.32));
-
         TextHandler menu = new TextHandler();
+
+        // This ArrayList holds all created accounts
+        ArrayList<Account> accountHolder = new ArrayList<>();
+        // Creates a few different accounts on startup
+        initialAccounts(accountHolder);
+
+
         System.out.println("Hello and welcome to AM Banking & Finances.");
 
         int menuChoice;
@@ -31,7 +32,7 @@ public class Transactions
         int accountIndex = 0;
 
         // constructors variables
-        String owner;
+        /*String owner;
         int acctNumber;
         double acctBalance;
 
@@ -39,9 +40,9 @@ public class Transactions
         //-----a check if an accountType gets selected,
         //and then stores which type of account ------
         boolean accountTypeCheck;
-        int accountType;
+        int accountType;*/
 
-        // Initializing the thread for interestHadnling
+        // Initializing the thread for interestHandling
         InterestHandler interestThread = new InterestHandler(accountHolder);
         interestThread.start();
 
@@ -73,7 +74,8 @@ public class Transactions
             }
 
             switch (menuChoice){
-                // Shows the account balance
+
+                //------------------Shows the account balance
                 case 1:
                     System.out.println("Your current balance is ");
                     System.out.println(accountHolder.get(accountIndex).getBalance());
@@ -82,67 +84,27 @@ public class Transactions
                         System.out.println("You have accumulated a total interest of: " + accountAsSaving.getTotalInterest());
                     }
                     break;
-                // Deposits a value into the selected account
+                //------------------Deposits a value into the selected account
                 case 2:
                     System.out.println("How much would you like to deposit?");
                     double depositValue = menu.userDouble();
                     accountHolder.get(accountIndex).deposit(depositValue);
-                    System.out.println("You have successfully deposited " + depositValue + ", your balance is now " + accountHolder.get(accountIndex).getBalance());
                     break;
                 // Withdraws a value from the selected account
                 case 3:
                     System.out.println("How much would you like to withdraw? There is a 0.5 withdraw fee.");
                     double withdrawValue = menu.userDouble();
                     accountHolder.get(accountIndex).withdraw(withdrawValue, withdrawFee);
-                    System.out.println("You have successfully withdrew " + withdrawValue + ", your balance is now " + accountHolder.get(accountIndex).getBalance());
                     break;
-                // Create a new account
+                //-------------------Create a new account
                 case 4:
                     System.out.println("Please select the type of account you want.");
                     System.out.println("A Checking Account will have an interest of 1%, while a Savings Account will have an interest of 10.");
                     System.out.println("1: Checking Account");
                     System.out.println("2: Savings Account");
+                    System.out.println("3: Credit Account");
                     int accountChoice = menu.userInt();
-                    switch (accountChoice){
-                        case 1:
-                            System.out.println("You have selected a Checking Account, please fill in the following details.");
-                            accountType = 1;
-                            accountTypeCheck = true;
-                            break;
-                        case 2:
-                            System.out.println("You have selected a Savings Account, please fill in the following details.");
-                            accountType = 2;
-                            accountTypeCheck = true;
-                            break;
-                            default:
-                                System.out.println("This is not a valid option, please try again.");
-                                accountType = 0;
-                                accountTypeCheck = false;
-                    }
-                    // If the user selected a valid accountType the user gets past this check
-                    if (accountTypeCheck){
-                        System.out.println("Please select an account number.");
-                        acctNumber = menu.userInt();
-                        System.out.println("Please choose your initial deposit.");
-                        acctBalance = menu.userDouble();
-                        System.out.println("Now, please input the name of the owner of the account: ");
-                        owner = menu.userString();
-
-                        //----------------------------------------//
-                        // the user is making a Checking account //
-                        if (accountType == 1){
-                            Account acct = new CheckingAccount(owner, acctNumber, acctBalance);
-                            accountHolder.add(acct);
-                            System.out.println("You have successfully created a new Checking Account, with a current balance of " + acct.getBalance() + ".");
-                        }
-                        //---------------------------------------//
-                        // the user is making a Savings account //
-                        if(accountType == 2){
-                            Account acct = new SavingsAccount(owner, acctNumber, acctBalance);
-                            accountHolder.add(acct);
-                            System.out.println("You have successfully created a new Savings Account, with a current balance of " + acct.getBalance() + ".");
-                        }
-                    }
+                    accountSelector(accountHolder, menu, accountChoice);
                     break;
                 // end the program
                 case 5:
@@ -152,8 +114,12 @@ public class Transactions
                 case 6:
                     System.out.println("Showing a list of all accounts");
                     for (Account accounts : accountHolder){
-                        System.out.println("Account Number: " + accounts.getAccountNum() + ", Owner: "  + accounts.getOwner() + ", Account Type: "+ accounts.getAccountType());
+                        System.out.println(accounts.toString());
+                       /* accounts.toString();
+                        System.out.println("Account Number: " + accounts.getAccountNum() + ", Owner: "  + accounts.getOwner() +
+                                ", Account Type: "+ accounts.getAccountType() + ", Balance: " + accounts.getBalance());*/
                     }
+                    break;
                 default:
                     System.out.println("You have selected an invalid option, please try again.");
                     break;
@@ -161,5 +127,93 @@ public class Transactions
             }
         } while (menuLoop);
 
+    }
+
+    //----------------------------------------------------
+    // Creates a few different accounts on startup
+    //----------------------------------------------------
+    private static void initialAccounts(ArrayList<Account> accountHolder) {
+        accountHolder.add(new CheckingAccount("Ted Murphy", 12));
+        accountHolder.get(0).deposit(110.0);
+        accountHolder.add(new CheckingAccount ("Jane Smith", 13));
+        accountHolder.get(1).deposit(50.11);
+        accountHolder.add(new SavingsAccount ("Edward Demsey", 14));
+        accountHolder.get(2).deposit(720);
+        accountHolder.add(new CreditAccount("Kalle Anka", 15));
+        accountHolder.get(3).withdraw(500,0.25);
+        accountHolder.get(3).deposit(50);
+    }
+
+    //----------------------------------------------------
+    // Sets up the account creation and asks for the relevant information
+    //----------------------------------------------------
+    private static void accountSelector(ArrayList<Account> accountHolder, TextHandler menu, int accountChoice) {
+        int accountType;
+        boolean accountTypeCheck;
+        int acctNumber;
+        String owner;
+        double acctBalance;
+        switch (accountChoice){
+            case 1:
+                System.out.println("You have selected a Checking Account, please fill in the following details.");
+                accountType = 1;
+                accountTypeCheck = true;
+                break;
+            case 2:
+                System.out.println("You have selected a Savings Account, please fill in the following details.");
+                accountType = 2;
+                accountTypeCheck = true;
+                break;
+            case 3:
+                System.out.println("You have selected a Credit Account, please fill in the following details.");
+                accountType = 3;
+                accountTypeCheck = true;
+                break;
+                default:
+                    System.out.println("This is not a valid option, please try again.");
+                    accountType = 0;
+                    accountTypeCheck = false;
+        }
+        // If the user selected a valid accountType the user gets past this check
+        if (accountTypeCheck){
+            System.out.println("Please select an account number.");
+            acctNumber = menu.userInt();
+            System.out.println("Now, please input the name of the owner of the account: ");
+            owner = menu.userString();
+            System.out.println("Please choose your initial deposit.");
+            acctBalance = menu.userDouble();
+
+            accountCreation(accountHolder, owner, acctNumber, acctBalance, accountType);
+        }
+    }
+
+    //----------------------------------------------------
+    // Creates the account as specified by accountSelector
+    //----------------------------------------------------
+    private static void accountCreation(ArrayList<Account> accountHolder, String owner, int acctNumber, double acctBalance, int accountType) {
+        //----------------------------------------//
+        // the user is making a Checking account //
+        if (accountType == 1){
+            Account acct = new CheckingAccount(owner, acctNumber);
+            acct.deposit(acctBalance);
+            accountHolder.add(acct);
+            System.out.println("You have successfully created a new Checking Account, with a current balance of " + acct.getBalance() + ".");
+        }
+        //---------------------------------------//
+        // the user is making a Savings account //
+        if(accountType == 2){
+            Account acct = new SavingsAccount(owner, acctNumber);
+            acct.deposit(acctBalance);
+            accountHolder.add(acct);
+            System.out.println("You have successfully created a new Savings Account, with a current balance of " + acct.getBalance() + ".");
+        }
+        //--------------------------------------//
+        // the user is making a Credit account //
+        if(accountType == 3){
+            Account acct = new CreditAccount(owner, acctNumber);
+            acct.deposit(acctBalance);
+            accountHolder.add(acct);
+            System.out.println("You have successfully created a new Savings Account, with a current balance of " + acct.getBalance() + ".");
+        }
     }
 }
