@@ -15,12 +15,10 @@ public class Transactions
     public static void main (String[] args)
     {
         // create an arraylist and add a few entries
-        ArrayList<CheckingAccount> checkingAccounts = new ArrayList<>();
-        ArrayList<SavingsAccount> savingAccounts = new ArrayList<>();
         ArrayList<Account> accountHolder = new ArrayList<>();
-        checkingAccounts.add(new CheckingAccount("Ted Murphy", 72354, 102.56));
-        checkingAccounts.add(new CheckingAccount ("Jane Smith", 69713, 40.00));
-        savingAccounts.add(new SavingsAccount ("Edward Demsey", 93757, 759.32));
+        accountHolder.add(new CheckingAccount("Ted Murphy", 72354, 102.56));
+        accountHolder.add(new CheckingAccount ("Jane Smith", 69713, 40.00));
+        accountHolder.add(new SavingsAccount ("Edward Demsey", 93757, 759.32));
 
         TextHandler menu = new TextHandler();
         System.out.println("Hello and welcome to AM Banking & Finances.");
@@ -28,7 +26,7 @@ public class Transactions
         int menuChoice;
         double withdrawFee = 0.5;
         boolean menuLoop = true;
-        boolean accountExists = false;
+        boolean accountExists;
         int accountSelection;
         int accountIndex = 0;
 
@@ -43,6 +41,12 @@ public class Transactions
         boolean accountTypeCheck;
         int accountType;
 
+        // Initializing the thread for interestHadnling
+        InterestHandler interestThread = new InterestHandler(accountHolder);
+        interestThread.start();
+
+        //-------------------------------------------------
+        // Do While that contains the full command box menu
         do {
             // display the menu, and get a user choice
             menu.displayMenu();
@@ -52,12 +56,12 @@ public class Transactions
             if (menuChoice < 4){
                 System.out.println("Please select your account number:");
                 accountSelection = menu.userInt();
-                System.out.println(accountSelection);
 
                 // finds the account in the arraylist
+                accountExists = false;
                 for(int i = 0; i < accountHolder.size(); i++){
                     // once it finds the correct account, saved the index for it
-                    if (accountHolder.get(i).getAccountNum() == accountSelection && !accountExists) {
+                    if (accountHolder.get(i).getAccountNum() == accountSelection) {
                         accountIndex = i;
                         accountExists = true;
                     }
@@ -73,9 +77,10 @@ public class Transactions
                 case 1:
                     System.out.println("Your current balance is ");
                     System.out.println(accountHolder.get(accountIndex).getBalance());
-                    /* (accountHolder.get(accountIndex).getAccountType() == 2){
-                        //accountHolder.get(accountIndex).getTotalInterest();
-                    }*/
+                    if(accountHolder.get(accountIndex) instanceof SavingsAccount){
+                        SavingsAccount accountAsSaving = (SavingsAccount) accountHolder.get(accountIndex);
+                        System.out.println("You have accumulated a total interest of: " + accountAsSaving.getTotalInterest());
+                    }
                     break;
                 // Deposits a value into the selected account
                 case 2:
@@ -142,7 +147,13 @@ public class Transactions
                 // end the program
                 case 5:
                     menuLoop = false;
+                    interestThread.interrupt();
                     break;
+                case 6:
+                    System.out.println("Showing a list of all accounts");
+                    for (Account accounts : accountHolder){
+                        System.out.println(accounts.getAccountNum() + " || " + accounts.getBalance());
+                    }
                 default:
                     System.out.println("You have selected an invalid option, please try again.");
                     break;
@@ -150,5 +161,6 @@ public class Transactions
             }
             System.out.println(accountHolder);
         } while (menuLoop);
+
     }
 }

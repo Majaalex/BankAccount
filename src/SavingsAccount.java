@@ -16,9 +16,10 @@ public class SavingsAccount extends Account {
     @Override
     public void addInterest() {
         double interest = 0.1;
-        double newBalance = getBalance() * interest;
+        double oldBalance = getBalance();
+        double newBalance = oldBalance + (oldBalance * interest);
         setBalance(newBalance);
-        double addedInterest = newBalance - getBalance();
+        double addedInterest = newBalance - oldBalance;
         totalInterest = totalInterest + addedInterest;
     }
 }
