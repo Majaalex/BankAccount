@@ -41,10 +41,7 @@ public class Transactions
         //-----a check if an accountType gets selected,
         //and then stores which type of account ------
         boolean accountTypeCheck;
-        int accountType = 0;
-
-        //------------------------//
-        boolean acctNumberSet = false;
+        int accountType;
 
         do {
             // display the menu, and get a user choice
@@ -52,7 +49,7 @@ public class Transactions
             menuChoice = menu.userInt();
 
             //if existing account, ask for the account number
-            if (!acctNumberSet && menuChoice < 4){
+            if (menuChoice < 4){
                 System.out.println("Please select your account number:");
                 accountSelection = menu.userInt();
                 System.out.println(accountSelection);
@@ -69,7 +66,6 @@ public class Transactions
                     System.out.println("You have input an account that does not exist. Please create a new account");
                     menuChoice = 4;
                 }
-                acctNumberSet = true;
             }
 
             switch (menuChoice){
@@ -77,9 +73,9 @@ public class Transactions
                 case 1:
                     System.out.println("Your current balance is ");
                     System.out.println(accountHolder.get(accountIndex).getBalance());
-                    if (accountHolder.get(accountIndex).getAccountType() == 2){
-                        accountHolder.get(accountIndex).getTotalInterest();
-                    }
+                    /* (accountHolder.get(accountIndex).getAccountType() == 2){
+                        //accountHolder.get(accountIndex).getTotalInterest();
+                    }*/
                     break;
                 // Deposits a value into the selected account
                 case 2:
@@ -141,11 +137,7 @@ public class Transactions
                             accountHolder.add(acct);
                             System.out.println("You have successfully created a new Savings Account, with a current balance of " + acct.getBalance() + ".");
                         }
-
-            }
-
-                    // set acctberSet flag to false to make the user reenter account number before managing the account
-                    acctNumberSet = false;
+                    }
                     break;
                 // end the program
                 case 5:
@@ -156,11 +148,7 @@ public class Transactions
                     break;
 
             }
+            System.out.println(accountHolder);
         } while (menuLoop);
-    }
-
-    public static void accountCreationDialogue(){
-
-
     }
 }
