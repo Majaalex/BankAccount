@@ -1,10 +1,3 @@
-//********************************************************************
-//  Transactions.java       Author: Lewis/Loftus
-//
-//  Demonstrates the creation and use of multiple Account objects.
-//********************************************************************
-
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Transactions
@@ -120,13 +113,16 @@ public class Transactions
     // Creates a few different accounts on startup
     //----------------------------------------------------
     private static void initialAccounts(HashMap<Integer, Account> accountHashMap) {
-        accountHashMap.put(12, new CheckingAccount("Ted Murphy", 12));
-        accountHashMap.put(13, new SavingsAccount("Jane Smith", 13));
-        accountHashMap.put(14, new CreditAccount("Edward Demsey", 14));
-        accountHashMap.get(12).deposit(110.0);
-        accountHashMap.get(13).deposit(50.11);
-        accountHashMap.get(14).withdraw(500, 0.25);
-        accountHashMap.get(14).deposit(110.0);
+        Account testAcc1 = new CheckingAccount("Ted Murphy", Account.generateAccountNum());
+        Account testAcc2 = new SavingsAccount("Jane Smith", Account.generateAccountNum());
+        Account testAcc3 = new CreditAccount("Edward Demsey", Account.generateAccountNum());
+        accountHashMap.put(testAcc1.getAccountNum(), testAcc1);
+        accountHashMap.put(testAcc2.getAccountNum(), testAcc2);
+        accountHashMap.put(testAcc3.getAccountNum(), testAcc3);
+        accountHashMap.get(testAcc1.getAccountNum()).deposit(110.0);
+        accountHashMap.get(testAcc2.getAccountNum()).deposit(50.11);
+        accountHashMap.get(testAcc3.getAccountNum()).withdraw(500, 0.25);
+        accountHashMap.get(testAcc3.getAccountNum()).deposit(110.0);
     }
 
     //----------------------------------------------------
@@ -162,9 +158,12 @@ public class Transactions
         if (accountTypeCheck){
             System.out.println("Please input the name of the owner of the account: ");
             owner = menu.userString();
-            System.out.println("Please choose your initial deposit.");
-            acctBalance = menu.userDouble();
-
+            if (accountType != 3){
+                System.out.println("Please choose your initial deposit.");
+                acctBalance = menu.userDouble();
+            } else {
+                acctBalance = 0;
+            }
             accountCreation(accountHashMap, owner, acctBalance, accountType);
         }
     }

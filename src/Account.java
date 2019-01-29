@@ -117,6 +117,6 @@ public abstract class Account
    }
 
    public static int generateAccountNum(){
-      return latestAccountNum++;
+      return ++latestAccountNum;
    }
 }

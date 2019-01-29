@@ -1,5 +1,5 @@
 public class CreditAccount extends Account{
-    public CreditAccount (String owner, long account){
+    public CreditAccount (String owner, int account){
         super(owner, account);
         setAccountType(3);
     }

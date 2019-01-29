@@ -1,6 +1,6 @@
 public class CheckingAccount extends Account{
 
-    public CheckingAccount(String owner, long account){
+    public CheckingAccount(String owner, int account){
         super(owner, account);
         setAccountType(1);
     }

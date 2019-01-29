@@ -1,7 +1,7 @@
 public class SavingsAccount extends Account {
     private double totalInterest;
 
-    public SavingsAccount(String owner, long account){
+    public SavingsAccount(String owner, int account){
         super(owner, account);
         setAccountType(2);
     }
