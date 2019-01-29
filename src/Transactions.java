@@ -1,13 +1,10 @@
 import java.util.HashMap;
 
-public class Transactions
-{
+public class Transactions {
     //-----------------------------------------------------------------
     //  Creates some bank accounts and requests various services.
     //-----------------------------------------------------------------
-
-    public static void main (String[] args)
-    {
+    public static void main(String[] args) {
         TextHandler menu = new TextHandler();
 
         // HashMap which contains all the created accounts
@@ -15,9 +12,9 @@ public class Transactions
         // Creates a few different accounts on startup
         initialAccounts(accountHashMap);
 
-
         System.out.println("Hello and welcome to AM Banking & Finances.");
 
+        //---------------Variables
         int menuChoice;
         double withdrawFee = 0.5;
         boolean menuLoop = true;
@@ -38,7 +35,7 @@ public class Transactions
             menuChoice = menu.userInt();
 
             // Full menu,
-            switch (menuChoice){
+            switch (menuChoice) {
                 // Cases 1-3 will all ask for an account number
                 case 1:
                 case 2:
@@ -47,24 +44,24 @@ public class Transactions
                     accountSelection = menu.userInt();
                     acct = accountHashMap.get(accountSelection);
                     // Make sure the selected account exists
-                    if (accountHashMap.get(accountSelection) != null){
+                    if (accountHashMap.get(accountSelection) != null) {
                         // Splits up cases 1-3
-                        switch (menuChoice){
-                                // Account Balance
+                        switch (menuChoice) {
+                            // Account Balance
                             case 1:
                                 System.out.println("Your current balance is ");
                                 System.out.println(acct.getBalance());
-                                if(acct instanceof SavingsAccount){
+                                if (acct instanceof SavingsAccount) {
                                     System.out.println("You have accumulated a total interest of: " + ((SavingsAccount) acct).getTotalInterest() + ".");
                                 }
                                 break;
-                                // Deposit to Account
+                            // Deposit to Account
                             case 2:
                                 System.out.println("How much would you like to deposit?");
                                 double depositValue = menu.userDouble();
                                 acct.deposit(depositValue);
                                 break;
-                                // Withdraw from Account
+                            // Withdraw from Account
                             case 3:
                                 System.out.println("How much would you like to withdraw? There is a 0.5 withdraw fee.");
                                 double withdrawValue = menu.userDouble();
@@ -72,12 +69,12 @@ public class Transactions
                                 break;
                         }
                     } else {
-                        // If no account was found in the hashmap
+                        // If no account was found in the HashMap
                         System.out.println("The account you selected does not exist.");
                         break;
                     }
                     break;
-                    // Create account
+                // Create account
                 case 4:
                     System.out.println("Please select the type of account you want.");
                     System.out.println("A Checking Account will have an interest of 1%, while a Savings Account will have an interest of 10.");
@@ -87,26 +84,25 @@ public class Transactions
                     int accountChoice = menu.userInt();
                     accountSelector(accountHashMap, menu, accountChoice);
                     break;
-                    // List all Accounts
+                // List all Accounts
                 case 5:
 
                     System.out.println("Showing a list of all accounts");
-                    System.out.println(String.format("%7s%20s%20s%20s","Account","Owner","Balance","Type"));
-                    for (Account accounts : accountHashMap.values()){
+                    System.out.println(String.format("%7s%20s%20s%20s", "Account", "Owner", "Balance", "Type"));
+                    for (Account accounts : accountHashMap.values()) {
                         System.out.println(accounts.toString());
                     }
                     break;
-                    // Terminate program
+                // Terminate program
                 case 9:
                     menuLoop = false;
                     interestThread.interrupt();
                     break;
-                    default:
-                        System.out.println("You have selected an invalid option, please try again.");
-                        break;
+                default:
+                    System.out.println("You have selected an invalid option, please try again.");
+                    break;
             }
         } while (menuLoop);
-
     }
 
     //----------------------------------------------------
@@ -133,7 +129,7 @@ public class Transactions
         boolean accountTypeCheck;
         String owner;
         double acctBalance;
-        switch (accountChoice){
+        switch (accountChoice) {
             case 1:
                 System.out.println("You have selected a Checking Account, please fill in the following details.");
                 accountType = 1;
@@ -149,16 +145,16 @@ public class Transactions
                 accountType = 3;
                 accountTypeCheck = true;
                 break;
-                default:
-                    System.out.println("This is not a valid option, please try again.");
-                    accountType = 0;
-                    accountTypeCheck = false;
+            default:
+                System.out.println("This is not a valid option, please try again.");
+                accountType = 0;
+                accountTypeCheck = false;
         }
         // If the user selected a valid accountType the user gets past this check
-        if (accountTypeCheck){
+        if (accountTypeCheck) {
             System.out.println("Please input the name of the owner of the account: ");
             owner = menu.userString();
-            if (accountType != 3){
+            if (accountType != 3) {
                 System.out.println("Please choose your initial deposit.");
                 acctBalance = menu.userDouble();
             } else {
@@ -175,24 +171,24 @@ public class Transactions
         Account acct = null;
         //----------------------------------------//
         // the user is making a Checking account //
-        if (accountType == 1){
+        if (accountType == 1) {
             acct = new CheckingAccount(owner, Account.generateAccountNum());
-            }
+        }
         //---------------------------------------//
         // the user is making a Savings account //
-        if(accountType == 2){
+        if (accountType == 2) {
             acct = new SavingsAccount(owner, Account.generateAccountNum());
-            }
+        }
         //--------------------------------------//
         // the user is making a Credit account //
-        if(accountType == 3){
+        if (accountType == 3) {
             acct = new CreditAccount(owner, Account.generateAccountNum());
 
         }
-        if (acct != null){
+        if (acct != null) {
             acct.deposit(acctBalance);
-            accountHashMap.put(acct.getAccountNum(),acct);
+            accountHashMap.put(acct.getAccountNum(), acct);
             System.out.println("You have successfully created a new Savings Account, with a current balance of " + acct.getBalance() + ".");
         }
-        }
+    }
 }

@@ -1,9 +1,10 @@
-public class CheckingAccount extends Account{
+public class CheckingAccount extends Account {
 
-    public CheckingAccount(String owner, int account){
+    CheckingAccount(String owner, int account) {
         super(owner, account);
         setAccountType(1);
     }
+
     @Override
     public void addInterest() {
         double interest = 0.01;

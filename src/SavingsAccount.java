@@ -1,15 +1,16 @@
 public class SavingsAccount extends Account {
     private double totalInterest;
 
-    public SavingsAccount(String owner, int account){
+    SavingsAccount(String owner, int account) {
         super(owner, account);
         setAccountType(2);
     }
 
-    public double getTotalInterest(){
+    double getTotalInterest() {
         return totalInterest;
     }
 
+    // Adds interest and stores the total interest the account has accumulated
     @Override
     public void addInterest() {
         double interest = 0.1;

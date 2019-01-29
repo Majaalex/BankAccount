@@ -1,8 +1,8 @@
 import java.util.Scanner;
 
-public class TextHandler {
-
-    public void displayMenu (){
+class TextHandler {
+    
+    void displayMenu() {
         System.out.println("Choose one of the following options:");
         System.out.println("1: Show your accounts balance");
         System.out.println("2: Deposit to your account balance");
@@ -13,21 +13,21 @@ public class TextHandler {
     }
 
     // userinput, returns int
-    public int userInt(){
+    int userInt() {
         Scanner reader = new Scanner(System.in);
         System.out.println("Your value: ");
         return reader.nextInt();
     }
 
     // userinput, returns double
-    public double userDouble(){
+    double userDouble() {
         Scanner reader = new Scanner(System.in);
         System.out.println("Your value: ");
         return reader.nextDouble();
     }
 
     // userinput, returns String
-    public String userString(){
+    String userString() {
         Scanner reader = new Scanner(System.in);
         System.out.println("Your value: ");
         return reader.nextLine();
