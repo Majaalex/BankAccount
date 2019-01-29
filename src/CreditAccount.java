@@ -15,8 +15,8 @@ public class CreditAccount extends Account{
     @Override
     public double deposit(double amount) {
         double currentBalance = getBalance();
-        if (currentBalance > amount){
-            setBalance(getBalance() - amount);
+        if (currentBalance <= -amount){
+            setBalance(getBalance() + amount);
             System.out.println("You have deposited " + amount + " into your account.");
             System.out.println("Your new balance is " + getBalance());
         } else {
@@ -27,11 +27,11 @@ public class CreditAccount extends Account{
 
     @Override
     public double withdraw(double amount, double fee) {
-        double upperLimit = 1000;
+        double upperLimit = -1000;
         double lowerLimit = 0;
-        double possibleBalance = getBalance() + amount + fee;
-        if (possibleBalance <= upperLimit && possibleBalance >= lowerLimit){
-            setBalance(getBalance() + amount + fee);
+        double possibleBalance = getBalance() - amount - fee;
+        if (possibleBalance <= lowerLimit && possibleBalance >= upperLimit){
+            setBalance(getBalance() - amount - fee);
             System.out.println("You have withdrawn " + amount + " from your account.");
             System.out.println("You currently have a debt of " + getBalance() + ".");
             return 0;

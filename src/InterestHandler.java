@@ -3,11 +3,9 @@ import java.util.ArrayList;
 
 public class InterestHandler extends Thread {
 
-    Clock c;
     private ArrayList<Account> accountHandler;
 
     public InterestHandler(ArrayList accounterHandler){
-        c = Clock.systemDefaultZone();
         this.accountHandler = accounterHandler;
     }
 

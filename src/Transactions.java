@@ -47,8 +47,9 @@ public class Transactions
                 System.out.println("Please select your account number:");
                 accountSelection = menu.userInt();
 
-                // finds the account in the arraylist
+                //Sets account exists to False so that every choice is verified in the ArrayList
                 accountExists = false;
+                // finds the account in the ArrayList
                 for(int i = 0; i < accountHolder.size(); i++){
                     // once it finds the correct account, saved the index for it
                     if (accountHolder.get(i).getAccountNum() == accountSelection) {
@@ -56,12 +57,13 @@ public class Transactions
                         accountExists = true;
                     }
                 }
+                // If the account doesn't exist, it sets the following switch to default which reruns the while loop
                 if (!accountExists){
-                    System.out.println("You have input an account that does not exist. Please create a new account");
-                    menuChoice = 4;
+                    menuChoice = 41;
                 }
             }
 
+            //------------ All menu choices after an account is selected
             switch (menuChoice){
 
                 //------------------Shows the account balance
@@ -95,20 +97,20 @@ public class Transactions
                     int accountChoice = menu.userInt();
                     accountSelector(accountHolder, menu, accountChoice);
                     break;
-                // end the program
+                //-------------------Ends the program
                 case 5:
                     menuLoop = false;
                     interestThread.interrupt();
                     break;
+                //-------------------List all existing Accounts
                 case 6:
                     System.out.println("Showing a list of all accounts");
+                    System.out.println(String.format("%7s%20s%20s%20s","Account","Owner","Balance","Type"));
                     for (Account accounts : accountHolder){
                         System.out.println(accounts.toString());
-                       /* accounts.toString();
-                        System.out.println("Account Number: " + accounts.getAccountNum() + ", Owner: "  + accounts.getOwner() +
-                                ", Account Type: "+ accounts.getAccountType() + ", Balance: " + accounts.getBalance());*/
                     }
                     break;
+                //-------------------Default
                 default:
                     System.out.println("You have selected an invalid option, please try again.");
                     break;
@@ -180,29 +182,27 @@ public class Transactions
     // Creates the account as specified by accountSelector
     //----------------------------------------------------
     private static void accountCreation(ArrayList<Account> accountHolder, String owner, int acctNumber, double acctBalance, int accountType) {
+        Account acct = null;
         //----------------------------------------//
         // the user is making a Checking account //
         if (accountType == 1){
-            Account acct = new CheckingAccount(owner, acctNumber);
-            acct.deposit(acctBalance);
-            accountHolder.add(acct);
-            System.out.println("You have successfully created a new Checking Account, with a current balance of " + acct.getBalance() + ".");
-        }
+            acct = new CheckingAccount(owner, acctNumber);
+            }
         //---------------------------------------//
         // the user is making a Savings account //
         if(accountType == 2){
-            Account acct = new SavingsAccount(owner, acctNumber);
-            acct.deposit(acctBalance);
-            accountHolder.add(acct);
-            System.out.println("You have successfully created a new Savings Account, with a current balance of " + acct.getBalance() + ".");
-        }
+            acct = new SavingsAccount(owner, acctNumber);
+            }
         //--------------------------------------//
         // the user is making a Credit account //
         if(accountType == 3){
-            Account acct = new CreditAccount(owner, acctNumber);
+            acct = new CreditAccount(owner, acctNumber);
+
+        }
+        if (acct != null){
             acct.deposit(acctBalance);
             accountHolder.add(acct);
             System.out.println("You have successfully created a new Savings Account, with a current balance of " + acct.getBalance() + ".");
         }
-    }
+        }
 }

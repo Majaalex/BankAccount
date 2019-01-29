@@ -86,7 +86,7 @@ public abstract class Account
    {
       balance = balance - amount - fee;
       System.out.println("You have withdrawn " + amount + " from your account.");
-       System.out.println("You now have a balance of " + balance);
+      System.out.println("You now have a balance of " + balance);
       return balance;
    }
 
@@ -100,10 +100,18 @@ public abstract class Account
    //-----------------------------------------------------------------
    //  Returns a one-line description of the account as a string.
    //-----------------------------------------------------------------
-   public String toString ()
-   {
+   public String toString () {
       NumberFormat fmt = NumberFormat.getCurrencyInstance();
 
-      return (acctNumber + "\t" + name + "\t" + fmt.format(balance) + "\t" + accountType);
+      if (accountType == 1){
+         return String.format("%7s%20s%20s%20s",acctNumber,name,fmt.format(balance),"Checking Account");
+      }
+      if (accountType == 2){
+         return String.format("%7s%20s%20s%20s",acctNumber,name,fmt.format(balance),"Savings Account");
+      }
+      if (accountType == 3){
+         return String.format("%7s%20s%20s%20s",acctNumber,name,fmt.format(balance),"Credit Account");
+      }
+      else return String.format("%7s%20s%20s%20s",acctNumber,name,fmt.format(balance),accountType);
    }
 }
