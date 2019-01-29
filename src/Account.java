@@ -106,6 +106,9 @@ public abstract class Account {
         } else return String.format("%7s%20s%20s%20s", acctNumber, name, fmt.format(balance), accountType);
     }
 
+    //-----------------------------------------------------------------
+    //  Return an increment value based on the previous account number
+    //-----------------------------------------------------------------
     static int generateAccountNum() {
         return ++latestAccountNum;
     }
