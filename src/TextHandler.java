@@ -8,8 +8,8 @@ public class TextHandler {
         System.out.println("2: Deposit to your account balance");
         System.out.println("3: Withdraw from your account balance");
         System.out.println("4: Create a new account");
-        System.out.println("5: End the program");
-        System.out.println("6: Show a list of all accounts");
+        System.out.println("5: Show a list of all accounts");
+        System.out.println("9: End the program");
     }
 
     // userinput, returns int

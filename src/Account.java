@@ -11,17 +11,18 @@ public abstract class Account
 {
    //private final double RATE = 0.035; interest rate of 3.5%
 
-   private long acctNumber;
+   private int acctNumber;
    private double balance;
    private String name;
    private int accountType;
    private double rate;
+   public static int latestAccountNum = 23;
 
    //-----------------------------------------------------------------
    //  Sets up the account by defining its owner, account number,
    //  and initial balance.
    //-----------------------------------------------------------------
-   public Account (String owner, long account)
+   public Account (String owner, int account)
    {
       setOwner(owner);
       setAccountNum(account);
@@ -37,7 +38,7 @@ public abstract class Account
    public void setBalance(double initial){
       this.balance = initial;
    }
-   public void setAccountNum(long account){
+   public void setAccountNum(int account){
       this.acctNumber = account;
    }
    public void setAccountType(int accountType){
@@ -48,7 +49,7 @@ public abstract class Account
    //-----------------------------------------------------------------
    // GET functions
    //-----------------------------------------------------------------
-   public long getAccountNum(){
+   public int getAccountNum(){
       return acctNumber;
    }
    public int getAccountType(){
@@ -113,5 +114,9 @@ public abstract class Account
          return String.format("%7s%20s%20s%20s",acctNumber,name,fmt.format(balance),"Credit Account");
       }
       else return String.format("%7s%20s%20s%20s",acctNumber,name,fmt.format(balance),accountType);
+   }
+
+   public static int generateAccountNum(){
+      return latestAccountNum++;
    }
 }

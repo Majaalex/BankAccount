@@ -5,6 +5,7 @@
 //********************************************************************
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Transactions
 {
@@ -16,10 +17,10 @@ public class Transactions
     {
         TextHandler menu = new TextHandler();
 
-        // This ArrayList holds all created accounts
-        ArrayList<Account> accountHolder = new ArrayList<>();
+        // HashMap which contains all the created accounts
+        HashMap<Integer, Account> accountHashMap = new HashMap<>();
         // Creates a few different accounts on startup
-        initialAccounts(accountHolder);
+        initialAccounts(accountHashMap);
 
 
         System.out.println("Hello and welcome to AM Banking & Finances.");
@@ -27,12 +28,13 @@ public class Transactions
         int menuChoice;
         double withdrawFee = 0.5;
         boolean menuLoop = true;
-        boolean accountExists;
+        // Stores the selected account number
         int accountSelection;
-        int accountIndex = 0;
+        // Variable that gets the selected account
+        Account acct;
 
         // Initializing the thread for interestHandling
-        InterestHandler interestThread = new InterestHandler(accountHolder);
+        InterestHandler interestThread = new InterestHandler(accountHashMap);
         interestThread.start();
 
         //-------------------------------------------------
@@ -42,52 +44,47 @@ public class Transactions
             menu.displayMenu();
             menuChoice = menu.userInt();
 
-            //if existing account, ask for the account number
-            if (menuChoice < 4){
-                System.out.println("Please select your account number:");
-                accountSelection = menu.userInt();
-
-                //Sets account exists to False so that every choice is verified in the ArrayList
-                accountExists = false;
-                // finds the account in the ArrayList
-                for(int i = 0; i < accountHolder.size(); i++){
-                    // once it finds the correct account, saved the index for it
-                    if (accountHolder.get(i).getAccountNum() == accountSelection) {
-                        accountIndex = i;
-                        accountExists = true;
-                    }
-                }
-                // If the account doesn't exist, it sets the following switch to default which reruns the while loop
-                if (!accountExists){
-                    menuChoice = 41;
-                }
-            }
-
-            //------------ All menu choices after an account is selected
+            // Full menu,
             switch (menuChoice){
-
-                //------------------Shows the account balance
+                // Cases 1-3 will all ask for an account number
                 case 1:
-                    System.out.println("Your current balance is ");
-                    System.out.println(accountHolder.get(accountIndex).getBalance());
-                    if(accountHolder.get(accountIndex) instanceof SavingsAccount){
-                        SavingsAccount accountAsSaving = (SavingsAccount) accountHolder.get(accountIndex);
-                        System.out.println("You have accumulated a total interest of: " + accountAsSaving.getTotalInterest());
+                case 2:
+                case 3:
+                    System.out.println("Please select your account number:");
+                    accountSelection = menu.userInt();
+                    acct = accountHashMap.get(accountSelection);
+                    // Make sure the selected account exists
+                    if (accountHashMap.get(accountSelection) != null){
+                        // Splits up cases 1-3
+                        switch (menuChoice){
+                                // Account Balance
+                            case 1:
+                                System.out.println("Your current balance is ");
+                                System.out.println(acct.getBalance());
+                                if(acct instanceof SavingsAccount){
+                                    System.out.println("You have accumulated a total interest of: " + ((SavingsAccount) acct).getTotalInterest() + ".");
+                                }
+                                break;
+                                // Deposit to Account
+                            case 2:
+                                System.out.println("How much would you like to deposit?");
+                                double depositValue = menu.userDouble();
+                                acct.deposit(depositValue);
+                                break;
+                                // Withdraw from Account
+                            case 3:
+                                System.out.println("How much would you like to withdraw? There is a 0.5 withdraw fee.");
+                                double withdrawValue = menu.userDouble();
+                                acct.withdraw(withdrawValue, withdrawFee);
+                                break;
+                        }
+                    } else {
+                        // If no account was found in the hashmap
+                        System.out.println("The account you selected does not exist.");
+                        break;
                     }
                     break;
-                //------------------Deposits a value into the selected account
-                case 2:
-                    System.out.println("How much would you like to deposit?");
-                    double depositValue = menu.userDouble();
-                    accountHolder.get(accountIndex).deposit(depositValue);
-                    break;
-                // Withdraws a value from the selected account
-                case 3:
-                    System.out.println("How much would you like to withdraw? There is a 0.5 withdraw fee.");
-                    double withdrawValue = menu.userDouble();
-                    accountHolder.get(accountIndex).withdraw(withdrawValue, withdrawFee);
-                    break;
-                //-------------------Create a new account
+                    // Create account
                 case 4:
                     System.out.println("Please select the type of account you want.");
                     System.out.println("A Checking Account will have an interest of 1%, while a Savings Account will have an interest of 10.");
@@ -95,26 +92,25 @@ public class Transactions
                     System.out.println("2: Savings Account");
                     System.out.println("3: Credit Account");
                     int accountChoice = menu.userInt();
-                    accountSelector(accountHolder, menu, accountChoice);
+                    accountSelector(accountHashMap, menu, accountChoice);
                     break;
-                //-------------------Ends the program
+                    // List all Accounts
                 case 5:
-                    menuLoop = false;
-                    interestThread.interrupt();
-                    break;
-                //-------------------List all existing Accounts
-                case 6:
+
                     System.out.println("Showing a list of all accounts");
                     System.out.println(String.format("%7s%20s%20s%20s","Account","Owner","Balance","Type"));
-                    for (Account accounts : accountHolder){
+                    for (Account accounts : accountHashMap.values()){
                         System.out.println(accounts.toString());
                     }
                     break;
-                //-------------------Default
-                default:
-                    System.out.println("You have selected an invalid option, please try again.");
+                    // Terminate program
+                case 9:
+                    menuLoop = false;
+                    interestThread.interrupt();
                     break;
-
+                    default:
+                        System.out.println("You have selected an invalid option, please try again.");
+                        break;
             }
         } while (menuLoop);
 
@@ -123,25 +119,22 @@ public class Transactions
     //----------------------------------------------------
     // Creates a few different accounts on startup
     //----------------------------------------------------
-    private static void initialAccounts(ArrayList<Account> accountHolder) {
-        accountHolder.add(new CheckingAccount("Ted Murphy", 12));
-        accountHolder.get(0).deposit(110.0);
-        accountHolder.add(new CheckingAccount ("Jane Smith", 13));
-        accountHolder.get(1).deposit(50.11);
-        accountHolder.add(new SavingsAccount ("Edward Demsey", 14));
-        accountHolder.get(2).deposit(720);
-        accountHolder.add(new CreditAccount("Kalle Anka", 15));
-        accountHolder.get(3).withdraw(500,0.25);
-        accountHolder.get(3).deposit(50);
+    private static void initialAccounts(HashMap<Integer, Account> accountHashMap) {
+        accountHashMap.put(12, new CheckingAccount("Ted Murphy", 12));
+        accountHashMap.put(13, new SavingsAccount("Jane Smith", 13));
+        accountHashMap.put(14, new CreditAccount("Edward Demsey", 14));
+        accountHashMap.get(12).deposit(110.0);
+        accountHashMap.get(13).deposit(50.11);
+        accountHashMap.get(14).withdraw(500, 0.25);
+        accountHashMap.get(14).deposit(110.0);
     }
 
     //----------------------------------------------------
     // Sets up the account creation and asks for the relevant information
     //----------------------------------------------------
-    private static void accountSelector(ArrayList<Account> accountHolder, TextHandler menu, int accountChoice) {
+    private static void accountSelector(HashMap<Integer, Account> accountHashMap, TextHandler menu, int accountChoice) {
         int accountType;
         boolean accountTypeCheck;
-        int acctNumber;
         String owner;
         double acctBalance;
         switch (accountChoice){
@@ -167,41 +160,39 @@ public class Transactions
         }
         // If the user selected a valid accountType the user gets past this check
         if (accountTypeCheck){
-            System.out.println("Please select an account number.");
-            acctNumber = menu.userInt();
-            System.out.println("Now, please input the name of the owner of the account: ");
+            System.out.println("Please input the name of the owner of the account: ");
             owner = menu.userString();
             System.out.println("Please choose your initial deposit.");
             acctBalance = menu.userDouble();
 
-            accountCreation(accountHolder, owner, acctNumber, acctBalance, accountType);
+            accountCreation(accountHashMap, owner, acctBalance, accountType);
         }
     }
 
     //----------------------------------------------------
     // Creates the account as specified by accountSelector
     //----------------------------------------------------
-    private static void accountCreation(ArrayList<Account> accountHolder, String owner, int acctNumber, double acctBalance, int accountType) {
+    private static void accountCreation(HashMap<Integer, Account> accountHashMap, String owner, double acctBalance, int accountType) {
         Account acct = null;
         //----------------------------------------//
         // the user is making a Checking account //
         if (accountType == 1){
-            acct = new CheckingAccount(owner, acctNumber);
+            acct = new CheckingAccount(owner, Account.generateAccountNum());
             }
         //---------------------------------------//
         // the user is making a Savings account //
         if(accountType == 2){
-            acct = new SavingsAccount(owner, acctNumber);
+            acct = new SavingsAccount(owner, Account.generateAccountNum());
             }
         //--------------------------------------//
         // the user is making a Credit account //
         if(accountType == 3){
-            acct = new CreditAccount(owner, acctNumber);
+            acct = new CreditAccount(owner, Account.generateAccountNum());
 
         }
         if (acct != null){
             acct.deposit(acctBalance);
-            accountHolder.add(acct);
+            accountHashMap.put(acct.getAccountNum(),acct);
             System.out.println("You have successfully created a new Savings Account, with a current balance of " + acct.getBalance() + ".");
         }
         }
