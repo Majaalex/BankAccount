@@ -1,6 +1,6 @@
-import org.w3c.dom.Text;
-
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class Transactions {
@@ -9,22 +9,22 @@ public class Transactions {
     //-----------------------------------------------------------------
     public static void main(String[] args) {
         TextHandler menu = new TextHandler();
+        int latestAccNum = 30;
 
         // HashMap which contains all the created accounts
         HashMap<Integer, Account> accountHashMap = new HashMap<>();
 
-        // Creates a few different accounts on startup
-        //initialAccounts(accountHashMap);
+
 
         try {
           FileInputStream fi = new FileInputStream(new File("HashMap.txt"));
           ObjectInputStream oi = new ObjectInputStream(fi);
 
           accountHashMap = (HashMap<Integer, Account>) oi.readObject();
-            System.out.println("The existing accounts are: ");
+            /*System.out.println("The existing accounts are: ");
             for (Account accounts : accountHashMap.values()) {
                 System.out.println(accounts.toString());
-            }
+            }*/
 
             fi.close();
             oi.close();
@@ -35,6 +35,20 @@ public class Transactions {
         } catch (ClassNotFoundException e) {
             e.getException();
         }
+
+        ArrayList<Integer> latestAccAL = new ArrayList<>();
+        for (Account accounts : accountHashMap.values()) {
+            latestAccAL.add(accounts.getAccountNum());
+        }
+
+        Collections.sort(latestAccAL);
+        if(latestAccAL.size() > 0){
+            latestAccNum = latestAccAL.get(0);
+        }
+
+        // Creates a few different accounts on startup
+        //latestAccNum = initialAccounts(accountHashMap, latestAccNum);
+
 
         System.out.println("Hello and welcome to AM Banking & Finances.");
 
@@ -106,7 +120,7 @@ public class Transactions {
                     System.out.println("2: Savings Account");
                     System.out.println("3: Credit Account");
                     int accountChoice = menu.userInt();
-                    accountSelector(accountHashMap, menu, accountChoice);
+                    accountSelector(accountHashMap, menu, accountChoice, ++latestAccNum);
                     break;
                 // List all Accounts
                 case 5:
@@ -158,23 +172,26 @@ public class Transactions {
     //----------------------------------------------------
     // Creates a few different accounts on startup
     //----------------------------------------------------
-    private static void initialAccounts(HashMap<Integer, Account> accountHashMap) {
-        Account testAcc1 = new CheckingAccount("Ted Murphy", Account.generateAccountNum());
-        Account testAcc2 = new SavingsAccount("Jane Smith", Account.generateAccountNum());
-        Account testAcc3 = new CreditAccount("Edward Demsey", Account.generateAccountNum());
+    private static int initialAccounts(HashMap<Integer, Account> accountHashMap, int latestAccNum) {
+        Account testAcc1 = new CheckingAccount("Ted Murphy", latestAccNum++);
+        Account testAcc2 = new SavingsAccount("Jane Smith", latestAccNum++);
+        Account testAcc3 = new CreditAccount("Edward Demsey", latestAccNum++);
         accountHashMap.put(testAcc1.getAccountNum(), testAcc1);
         accountHashMap.put(testAcc2.getAccountNum(), testAcc2);
         accountHashMap.put(testAcc3.getAccountNum(), testAcc3);
+        System.out.println("bloop");
         accountHashMap.get(testAcc1.getAccountNum()).deposit(110.0);
+        System.out.println("er");
         accountHashMap.get(testAcc2.getAccountNum()).deposit(50.11);
         accountHashMap.get(testAcc3.getAccountNum()).withdraw(500, 0.25);
         accountHashMap.get(testAcc3.getAccountNum()).deposit(110.0);
+        return latestAccNum;
     }
 
     //----------------------------------------------------
     // Sets up the account creation and asks for the relevant information
     //----------------------------------------------------
-    private static void accountSelector(HashMap<Integer, Account> accountHashMap, TextHandler menu, int accountChoice) {
+    private static int accountSelector(HashMap<Integer, Account> accountHashMap, TextHandler menu, int accountChoice, int latestAccNum) {
         int accountType;
         boolean accountTypeCheck;
         String owner;
@@ -210,29 +227,30 @@ public class Transactions {
             } else {
                 acctBalance = 0;
             }
-            accountCreation(accountHashMap, owner, acctBalance, accountType);
+            return accountCreation(accountHashMap, owner, acctBalance, accountType, latestAccNum);
         }
+        return latestAccNum;
     }
 
     //----------------------------------------------------
     // Creates the account as specified by accountSelector
     //----------------------------------------------------
-    private static void accountCreation(HashMap<Integer, Account> accountHashMap, String owner, double acctBalance, int accountType) {
+    private static int accountCreation(HashMap<Integer, Account> accountHashMap, String owner, double acctBalance, int accountType, int latestAccNum) {
         Account acct = null;
         //----------------------------------------//
         // the user is making a Checking account //
         if (accountType == 1) {
-            acct = new CheckingAccount(owner, Account.generateAccountNum());
+            acct = new CheckingAccount(owner, latestAccNum);
         }
         //---------------------------------------//
         // the user is making a Savings account //
         if (accountType == 2) {
-            acct = new SavingsAccount(owner, Account.generateAccountNum());
+            acct = new SavingsAccount(owner, latestAccNum);
         }
         //--------------------------------------//
         // the user is making a Credit account //
         if (accountType == 3) {
-            acct = new CreditAccount(owner, Account.generateAccountNum());
+            acct = new CreditAccount(owner, latestAccNum);
 
         }
         if (acct != null) {
@@ -240,5 +258,6 @@ public class Transactions {
             accountHashMap.put(acct.getAccountNum(), acct);
             System.out.println("You have successfully created a new Savings Account, with a current balance of " + acct.getBalance() + ".");
         }
+        return ++latestAccNum;
     }
 }
