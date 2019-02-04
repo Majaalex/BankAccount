@@ -1,3 +1,6 @@
+import org.w3c.dom.Text;
+
+import java.io.*;
 import java.util.HashMap;
 
 public class Transactions {
@@ -9,8 +12,29 @@ public class Transactions {
 
         // HashMap which contains all the created accounts
         HashMap<Integer, Account> accountHashMap = new HashMap<>();
+
         // Creates a few different accounts on startup
-        initialAccounts(accountHashMap);
+        //initialAccounts(accountHashMap);
+
+        try {
+          FileInputStream fi = new FileInputStream(new File("HashMap.txt"));
+          ObjectInputStream oi = new ObjectInputStream(fi);
+
+          accountHashMap = (HashMap<Integer, Account>) oi.readObject();
+            System.out.println("The existing accounts are: ");
+            for (Account accounts : accountHashMap.values()) {
+                System.out.println(accounts.toString());
+            }
+
+            fi.close();
+            oi.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.getMessage();
+        } catch (ClassNotFoundException e) {
+            e.getException();
+        }
 
         System.out.println("Hello and welcome to AM Banking & Finances.");
 
@@ -103,6 +127,32 @@ public class Transactions {
                     break;
             }
         } while (menuLoop);
+
+        //----------------------------------------------------
+        // Store the HashMap in a file once the program is ended
+        //----------------------------------------------------
+        try{
+            File HashMap = new File("HashMap.txt");
+            try{
+                boolean newFile = HashMap.createNewFile();
+            } catch (Exception e){
+                System.out.println("File could not be created.");
+            }
+
+            FileOutputStream fOut = new FileOutputStream(HashMap);
+            ObjectOutputStream oOut = new ObjectOutputStream(fOut);
+
+            oOut.writeObject(accountHashMap);
+
+            fOut.close();
+            oOut.close();
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            System.out.println("We have an IOException: " + e);
+        }
     }
 
     //----------------------------------------------------

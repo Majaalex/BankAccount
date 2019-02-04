@@ -1,7 +1,8 @@
 
+import java.io.Serializable;
 import java.text.NumberFormat;
 
-public abstract class Account {
+public abstract class Account implements Serializable {
     //private final double RATE = 0.035; interest rate of 3.5%
     private int acctNumber;
     private double balance;
