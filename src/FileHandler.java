@@ -9,6 +9,12 @@ class FileHandler {
     HashMap<Integer, Account> getAccounts(){
         HashMap<Integer, Account> accountHashMap = new HashMap<>();
         try {
+            File HashMap = new File(fileName);
+            try{
+                boolean newFile = HashMap.createNewFile();
+            } catch (Exception e){
+                System.out.println("File could not be created.");
+            }
             FileInputStream fi = new FileInputStream(new File(fileName));
             ObjectInputStream oi = new ObjectInputStream(fi);
 
@@ -37,11 +43,6 @@ class FileHandler {
     void storeAccounts(HashMap<Integer, Account> accountHashMap){
         try{
             File HashMap = new File(fileName);
-            try{
-                boolean newFile = HashMap.createNewFile();
-            } catch (Exception e){
-                System.out.println("File could not be created.");
-            }
 
             FileOutputStream fOut = new FileOutputStream(HashMap);
             ObjectOutputStream oOut = new ObjectOutputStream(fOut);
