@@ -8,7 +8,6 @@ public abstract class Account implements Serializable {
     private double balance;
     private String name;
     private int accountType;
-    private static int latestAccountNum;
 
     //-----------------------------------------------------------------
     //  Sets up the account by defining its owner, account number,
@@ -106,11 +105,4 @@ public abstract class Account implements Serializable {
             return String.format("%7s%20s%20s%20s", acctNumber, name, fmt.format(balance), "Credit Account");
         } else return String.format("%7s%20s%20s%20s", acctNumber, name, fmt.format(balance), accountType);
     }
-
-    //-----------------------------------------------------------------
-    //  Return an increment value based on the previous account number
-    //-----------------------------------------------------------------
-    /*static int generateAccountNum() {
-        return ++latestAccountNum;
-    }*/
 }
