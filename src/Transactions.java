@@ -13,7 +13,10 @@ public class Transactions {
         accountHashMap = file.getAccounts();
 
         // Creates a few different accounts on startup
-        //initialAccounts(accountHashMap);
+        if (!accountHashMap.containsKey(1)){
+            initialAccounts(accountHashMap);
+        }
+
 
         // Variables
         int menuChoice;
@@ -113,7 +116,7 @@ public class Transactions {
     //----------------------------------------------------
     private static void initialAccounts(HashMap<Integer, Account> accountHashMap) {
         NumberGenerator number = new NumberGenerator();
-        Account testAcc1 = new CheckingAccount("Ted Murphy", number.getUniqueNumber(accountHashMap));
+        Account testAcc1 = new CheckingAccount("Ted Murphy", 1);
         Account testAcc2 = new SavingsAccount("Jane Smith", number.getUniqueNumber(accountHashMap));
         Account testAcc3 = new CreditAccount("Edward Demsey", number.getUniqueNumber(accountHashMap));
         accountHashMap.put(testAcc1.getAccountNum(), testAcc1);
