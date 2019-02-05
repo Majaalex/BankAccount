@@ -16,6 +16,10 @@ public class Transactions {
         if (!accountHashMap.containsKey(1)){
             initialAccounts(accountHashMap);
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 407cee7ec7ced19e58d0f9d46f5abd5df7999922
 
         // Variables
         int menuChoice;
