@@ -1,16 +1,10 @@
-import java.util.HashMap;
-import java.util.Random;
-
 class NumberGenerator {
+    private static int accountNumber = 1;
 
-    int getUniqueNumber(HashMap<Integer, Account> accountHashMap){
-        Random random = new Random();
-        int maxNumber = 5000;
-        int minNumber = 1;
-        int uniqueNum;
-        do {
-            uniqueNum = random.nextInt(maxNumber) + minNumber;
-        } while (accountHashMap.containsKey(uniqueNum));
-        return uniqueNum;
+    void setAccountNumber(int accountNumber){
+        NumberGenerator.accountNumber = accountNumber;
+    }
+    int getUniqueNumber(){
+        return ++accountNumber;
     }
 }
